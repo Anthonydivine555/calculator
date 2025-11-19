@@ -1,64 +1,67 @@
-let calculation = '';
-let buttonElement = '';
+
 let intervalid;
 let autoDisplay = true
+let buttonElement = '';
+
+let placeHolder = document.querySelector('.js-display').placeholder
+console.log(placeHolder)
 
 startBlinking ()
 
 function startBlinking () {
       intervalid = setInterval(() =>{
-      if (buttonElement === '') {
-      buttonElement = '0'
-      displayResult(buttonElement)
+      if (placeHolder === '') {
+      placeHolder = '0'
+      displayResult(placeHolder)
     }
    else {
-    buttonElement = ''
-    displayResult(buttonElement)
+    placeHolder = ''
+    displayResult(placeHolder)
   }
   } , 500)
   autoDisplay = true;
-  
 }
 
 function stopBlinking() {
   clearInterval(intervalid);
-  displayResult(buttonElement)
+  displayResult(placeHolder)
   autoDisplay = false;
-  if(buttonElement === '0') {
-    removeButtonElement();
-  removeCalculation();
-  }
-  console.log(buttonElement)
 }
 
-
-function buttonCalculation (add) {
-calculation += add;
-
-return calculation;
-}
 
 function displayResult(result) {
 let inputElement = document.querySelector('.js-display');
-  inputElement.value = result;
+inputElement.value = result;
 }
 
 function removeButtonElement() {
+  stopBlinking(); // stop current blinking
 
-  buttonElement = buttonElement.slice(0, buttonElement.length-1);
-  displayResult(buttonElement)
+  buttonElement = buttonElement.slice(0, buttonElement.length - 1);
+  displayResult(buttonElement);
+
+  if (buttonElement === '') {
+    startBlinking(); // restart only if empty
+  }
 }
 
-function removeCalculation() {
-   calculation = calculation.slice(0, calculation.length-1);
-   displayResult(calculation)  
-}
+// function clearAll() {
+
+// }
+
 
 function displayInnerHTML (selector) {
   buttonElement += selector;
 displayResult(buttonElement)
+console.log(buttonElement)
 }
 
+function calculate() {
+  let MathExpression = buttonElement.replace(/%/g, "/100")
+  let result = eval(MathExpression)
+  displayResult(result)
+  buttonElement = result.toString()
+}
 
 // addEventListener('keydown', (event) => {
 //   const inputElement = document.querySelector('.js-display').value
